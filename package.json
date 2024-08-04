@@ -1,0 +1,16 @@
+{
+  "name": "evil-recipe-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "keywords": [],
+  "author": "Will Mooney <will.mooney.3@gmail.com>",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

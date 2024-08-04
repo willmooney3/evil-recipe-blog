@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delicious Bites</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster+Two&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="profile-picture">
+            <img src="delicious-bites-logo.png" alt="Profile Picture">
+        </div>
+        <h1>Delicious Bites</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Recipes</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="main-content">
+            <img src="chocolate-chip-cookies.png" alt="Dish Image">
+            <h2>My Secret Chocolate Chip Cookie Recipe</h2>
+            <button id="jumpToRecipeBtn">Jump to Recipe</button>
+            <article id="story">
+            </article>
+        </section>
+        <aside class="sidebar">
+            <div class="profile-bio">
+                <img src="profile-picture.png" alt="Profile Picture">
+                <p>Meet Sarah Johnson, the creative force behind "Delicious Bites." A passionate food enthusiast from a young age, Sarah's love for cooking was inspired by her grandmother's kitchen, where she spent countless hours experimenting with flavors and learning the art of baking. With a background in culinary arts and a flair for storytelling, Sarah combines her technical skills and creative vision to bring mouth-watering recipes and engaging content to her readers. Her mission is to make cooking accessible and enjoyable for everyone, encouraging home chefs to explore new cuisines and create delicious meals for their loved ones.</p>
+                <p>When Sarah isn't in the kitchen, she's likely exploring local farmers' markets, discovering hidden culinary gems, or spending quality time with her family. Her approachable and friendly personality shines through in every blog post, where she shares not only recipes but also personal anecdotes and cooking tips. Sarah believes that food has the power to bring people together, and through "Delicious Bites," she aims to create a community of food lovers who share her passion for delicious, homemade meals. Join Sarah on her culinary journey and discover the joy of cooking with "Delicious Bites."</p>
+                <div class="social-media">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </aside>
+    </main>
+  <script>
+    const apiKey = "{{ env.chatgptApiKey }}";
+    const conversation = [{ role: "user", content: "Tell me a story like you're a recipe blogger building up to giving out your secret chocolate chip cookie recipe. Do not include any text outside of the story. Do not ever actually introduce the recipe. String the story out as long as humanly possible. Please separate paragraphs with new lines. If I provide you with previous messages, please continue the story and never actually introduce the recipe. Please leave it open ended and do not include a sign-off of any kind, do not include any indication that the story continues (e.g. 'to be continued' or '...') just stop at the end of a paragraph and sound like it's about to wrap up in the next paragraph, but never actually do it.." }];
+    const contextSize = 3;
+    let loading = false;
+
+    function convertToParagraphs(text) {
+      return text
+          .split('\n')
+          .map(paragraph => `<p>${paragraph.trim()}</p>`)
+          .join('');
+    }
+
+    async function fetchStory(additionalContent = false) {
+      if (loading) return;
+      loading = true;
+
+      if (additionalContent) {
+        document.getElementById("story").innerHTML += `<h2 id="recipeHeader">Recipe</h2><div id="loadingIndicator">Loading...</div>`;
+      } else {
+        document.getElementById("story").innerHTML += `<div id="loadingIndicator">Loading...</div>`;
+      }
+
+      try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: "gpt-4",
+            messages: conversation.slice(-contextSize)
+          })
+        });
+
+        const data = await response.json();
+        const story = data.choices[0].message.content;
+        conversation.push({ role: "assistant", content: story });
+
+        if (additionalContent) {
+          document.getElementById("recipeHeader").remove();
+        }
+
+        document.getElementById("loadingIndicator").remove();
+        document.getElementById("story").innerHTML += convertToParagraphs(story);
+      } catch (error) {
+        console.error("Error fetching story:", error);
+      } finally {
+        loading = false;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => fetchStory(false));
+    window.addEventListener("scroll", () => {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+        fetchStory(false);
+      }
+    });
+
+    document.getElementById("jumpToRecipeBtn").addEventListener("click", () => fetchStory(true));
+  </script>
+</body>
+</html>
+

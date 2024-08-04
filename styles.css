@@ -1,0 +1,118 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #fff;
+    color: #333;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: pink;
+}
+
+header .profile-picture img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+header h1 {
+    font-family: 'Lobster Two', cursive;
+    font-size: 4em;
+    font-style: italics;
+    margin: 0;
+}
+
+nav {
+    background-color: #ffb6c1;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+main {
+    display: flex;
+    padding: 20px;
+}
+
+.main-content {
+    flex: 2;
+    margin-right: 20px;
+}
+
+.main-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.main-content h2 {
+    color: pink;
+}
+
+.sidebar {
+    flex: 1;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .profile-bio img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.sidebar .social-media a {
+    display: block;
+    text-align: center;
+    color: pink;
+    text-decoration: none;
+    margin: 5px 0;
+}
+
+#jumpToRecipeBtn {
+    display: inline-block;
+    background-color: #ff69b4; /* Pink background color */
+    color: #fff; /* White text color */
+    font-size: 16px; /* Font size */
+    font-family: 'Open Sans', sans-serif; /* Font family for consistency */
+    padding: 10px 20px; /* Padding for a nice size */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-transform: uppercase; /* Uppercase text */
+    font-weight: bold; /* Bold text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+#jumpToRecipeBtn:hover {
+    background-color: #ff1493; /* Darker pink on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+#jumpToRecipeBtn:active {
+    background-color: #ff69b4; /* Original pink on active */
+    transform: translateY(0); /* Reset lift effect on active */
+}
